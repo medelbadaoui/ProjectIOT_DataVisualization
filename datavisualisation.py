@@ -2,6 +2,7 @@ from storedata import sensor_Data_Getter
 from storedata import get_Temperature_Level
 from storedata import get_Humidity_Level
 import matplotlib.pyplot as plt
+import numpy as np
 import matplotlib.animation as animation
 from matplotlib import style
 from datetime import datetime
@@ -12,7 +13,10 @@ from datetime import datetime
 
 
 format = '%d-%b-%Y %H:%M:%S:%f'
-fig = plt.figure()
+fig = plt.figure(facecolor='gray')
+fig.suptitle('Iot Sensors Visualization', fontsize=16)
+fig.subplots_adjust(top=0.9,hspace=0.4,wspace=0.4)
+
 fig.set_size_inches(18.5, 10.5, forward=True)
     
 
@@ -31,15 +35,16 @@ def animate(i):
 
     
     
-    ax =fig.add_subplot(3, 4, 1)
+    ax =fig.add_subplot(2, 3, 1)
+    
     ax.clear()
-    ax.plot(xs, ys)
-
-    plt.xticks(rotation=90, ha='right')
+    ax.plot(xs, ys,color="red")
+    ax.set_xticklabels([])
     plt.subplots_adjust(bottom=0.30)
     plt.title('Temperature Over Time')
 
     plt.ylabel('Temperature')
+    plt.xlabel('Time')
     #------------------
     data_humidity=sensor_Data_Getter("Home/Bedroom/DHT1/Humidity")
     xs1=[]
@@ -50,14 +55,17 @@ def animate(i):
         ys1.append(recordhumi[3])
 
 
-    ax1=fig.add_subplot(3, 4, 9)
+    ax1=fig.add_subplot(2, 3, 2)
     ax1.clear()
     ax1.plot(xs1,ys1)
 
 
-    plt.xticks(rotation=90, ha='right')
+
+    
+    ax1.set_xticklabels([])
     plt.subplots_adjust(bottom=0.30)
     plt.ylabel('Humidity ')
+    plt.xlabel('Time')
     plt.title('Humidity Over Time')
     # Draw the graph
     #------------------
@@ -73,14 +81,15 @@ def animate(i):
         ys3.append(recordacc[4])
 
 
-    ax2=fig.add_subplot(3, 4, 12)
+    ax2=fig.add_subplot(2, 3, 3)
     ax2.clear()
-    ax2.plot(xs2,ys2)
+    ax2.plot(xs2,ys2,color="green")
 
 
-    plt.xticks(rotation=90, ha='right')
+    ax2.set_xticklabels([])
     plt.subplots_adjust(bottom=0.30)
     plt.ylabel('Accelerator X ')
+    plt.xlabel('Time ')
     plt.title('Acceleration X Over Time')
 
 
@@ -89,21 +98,23 @@ def animate(i):
     
 
 
-    ax3=fig.add_subplot(3, 4, 4)
+    ax3=fig.add_subplot(2, 3, 4)
     ax3.clear()
-    ax3.plot(xs3,ys3)
+    ax3.plot(xs3,ys3,color="black")
 
 
     plt.xticks(rotation=90, ha='right')
+    ax3.set_xticklabels([])
     plt.subplots_adjust(bottom=0.30)
     plt.ylabel('Accelerator Y ')
+    plt.xlabel('Time')
     plt.title('Acceleration Y Over Time')
     # Draw the graph
 
     #------------------------------ pie charts
-    ax4=fig.add_subplot(3, 4, 10)
-    labels = 'VERY COLD', 'COLD', 'NORMAL', 'HOT','VERY HOT'
-    sizes = [get_Temperature_Level('VERY COLD'),get_Temperature_Level('COLD'),get_Temperature_Level('NORMAL'),get_Temperature_Level('HOT'),get_Temperature_Level('VERY HOT')]
+    ax4=fig.add_subplot(2, 3, 5)
+    labels =  'COLD','VERY COLD', 'NORMAL', 'HOT','VERY HOT'
+    sizes = [get_Temperature_Level('COLD'),get_Temperature_Level('VERY COLD'),get_Temperature_Level('NORMAL'),get_Temperature_Level('HOT'),get_Temperature_Level('VERY HOT')]
     explode = (0, 0, 0, 0,0)  # only "explode" the 2nd slice (i.e. 'Hogs')
     ax4.clear()
     ax4.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
@@ -111,7 +122,7 @@ def animate(i):
     ax4.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
     plt.title('Temperature Data per Level')
     #----------------------------------------------------------
-    ax5=fig.add_subplot(3, 4, 2)
+    ax5=fig.add_subplot(2, 3, 6)
     labels1 = 'LOW', 'MEDIUM', 'HIGH'
     sizes1 = [get_Humidity_Level('LOW'), get_Humidity_Level('MEDIUM'),get_Humidity_Level('HIGH') ]
     explode1 = (0, 0, 0)  

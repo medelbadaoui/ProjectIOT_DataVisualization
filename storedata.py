@@ -84,7 +84,7 @@ def sensor_Data_Handler(Topic,jsonData):
     elif Topic=="Home/BedRoom/DHT1/Acceleration":
         Acceleration_Data_Handler(jsonData)
 
-limit=10
+limit=100
 def Temperature_Data_Getter():
     dbObj=DatabaseManager()
     numberofrecords=dbObj.select_db_record('SELECT count(*) FROM Temperature_Data')
